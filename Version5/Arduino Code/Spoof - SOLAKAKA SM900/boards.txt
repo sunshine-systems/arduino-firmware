@@ -1,0 +1,51 @@
+solakakasm900.name=SOLAKAKA SM900
+
+solakakasm900.vid.0=0x30fa
+solakakasm900.pid.0=0x1440
+solakakasm900.vid.1=0x30fa
+solakakasm900.pid.1=0x1440
+solakakasm900.vid.2=0x30fa
+solakakasm900.pid.2=0x1440
+solakakasm900.vid.3=0x30fa
+solakakasm900.pid.3=0x1440
+
+solakakasm900.upload.tool=avrdude
+solakakasm900.upload.protocol=avr109
+solakakasm900.upload.maximum_size=28672
+solakakasm900.upload.maximum_data_size=2560
+solakakasm900.upload.speed=57600
+solakakasm900.upload.disable_flushing=true
+solakakasm900.upload.use_1200bps_touch=true
+solakakasm900.upload.wait_for_upload_port=true
+
+solakakasm900.bootloader.tool=avrdude
+solakakasm900.bootloader.low_fuses=0xff
+solakakasm900.bootloader.high_fuses=0xd8
+solakakasm900.bootloader.extended_fuses=0xcb
+solakakasm900.bootloader.file=caterina/Caterina-Leonardo.hex
+solakakasm900.bootloader.unlock_bits=0x3F
+solakakasm900.bootloader.lock_bits=0x2F
+
+solakakasm900.build.mcu=atmega32u4
+solakakasm900.build.f_cpu=16000000L
+
+# 1.10 (for USB 1.1, use 0x0110; for USB 2.0, use 0x0200; for USB 2.1, use 0x0210)
+solakakasm900.build.usb_version=0x0110
+solakakasm900.build.product_version=0x0100
+
+solakakasm900.build.control_pipe_size=8
+
+solakakasm900.build.vid=0x30fa
+solakakasm900.build.pid=0x1440
+solakakasm900.build.usb_product="USB GAMING MOUSE"
+solakakasm900.build.usb_manufacturer="INSTANT"
+solakakasm900.build.usb_serial=""
+
+solakakasm900.build.board=AVR_LEONARDO
+solakakasm900.build.core=arduino
+solakakasm900.build.variant=leonardo
+
+# omit_serial: 0 = do not omit serial, set the usb_serial value , 1 = do not report serial
+solakakasm900.build.omit_serial=1
+solakakasm900.build.extra_flags={build.usb_flags} -DUSB_SERIAL={build.usb_serial} -DUSB_OMIT_SERIAL={build.omit_serial} -DUSB_VERSION={build.usb_version} -DBCD_DEVICE={build.product_version}
+
