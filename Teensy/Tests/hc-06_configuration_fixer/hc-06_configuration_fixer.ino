@@ -33,7 +33,7 @@ const char* VERSION_NUMBER = "1.0";    // Include decimal point (e.g., "1.0")
 const char* NEW_PIN_CODE = "0000";
 
 // Define your preferred TARGET baud rate
-const unsigned long PREFERRED_BAUD = 115200;
+const unsigned long PREFERRED_BAUD = 38400;
 
 // Baud rate for the USB Serial Monitor connection
 const unsigned long MONITOR_BAUD = 115200;
