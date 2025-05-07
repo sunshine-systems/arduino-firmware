@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include "config.h" // Include our configuration definitions
+#include <USBHost_t36.h>
 
 unsigned long loopCounter = 0;
 

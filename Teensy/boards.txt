@@ -1,0 +1,236 @@
+# Teensy 4.1 Board Definition - Modified to Show ONLY Raw HID USB Type
+
+menu.usb=USB Type
+menu.speed=CPU Speed
+menu.opt=Optimize
+menu.keys=Keyboard Layout
+
+
+# TODO: consider whether these compiler warnings are worthwhile
+# -Wno-error=unused-function
+# -Wno-error=unused-but-set-variable
+# -Wno-error=unused-variable
+# -Wno-unused-parameter
+# -Wno-unused-but-set-parameter
+# -Wno-sign-compare
+
+
+teensy41.name=Teensy 4.1
+#teensy41.upload.maximum_size=8126464
+teensy41.build.board=TEENSY41
+teensy41.build.flags.ld=-Wl,--gc-sections,--relax "-T{build.core.path}/imxrt1062_t41.ld"
+#teensy41.upload.maximum_data_size=524288
+teensy41.upload.tool=teensyloader
+teensy41.upload.tool.default=teensyloader
+teensy41.upload.tool.teensy=teensyloader
+teensy41.upload.protocol=teensy
+teensy41.upload_port.modelID=0x25
+teensy41.build.core=teensy4
+teensy41.build.mcu=imxrt1062
+teensy41.build.warn_data_percentage=99
+teensy41.build.toolchain=arm/bin/
+teensy41.build.command.gcc=arm-none-eabi-gcc
+teensy41.build.command.g++=arm-none-eabi-g++
+teensy41.build.command.ar=arm-none-eabi-gcc-ar
+teensy41.build.command.objcopy=arm-none-eabi-objcopy
+teensy41.build.command.objdump=arm-none-eabi-objdump
+teensy41.build.command.linker=arm-none-eabi-gcc
+teensy41.build.command.size=arm-none-eabi-size
+teensy41.build.flags.common=-g -Wall -ffunction-sections -fdata-sections -nostdlib
+teensy41.build.flags.dep=-MMD
+teensy41.build.flags.optimize=-Os # Default Optimize option
+teensy41.build.flags.cpu=-mthumb -mcpu=cortex-m7 -mfloat-abi=hard -mfpu=fpv5-d16
+teensy41.build.flags.defs=-D__IMXRT1062__ -DTEENSYDUINO=159
+teensy41.build.flags.cpp=-std=gnu++17 -fno-exceptions -fpermissive -fno-rtti -fno-threadsafe-statics -felide-constructors -Wno-error=narrowing
+teensy41.build.flags.c=
+teensy41.build.flags.S=-x assembler-with-cpp
+teensy41.build.flags.libs=-larm_cortexM7lfsp_math -lm -lstdc++
+teensy41.serial.restart_cmd=false
+
+# --- USB Type Definitions - Only Raw HID Enabled ---
+#teensy41.menu.usb.serial=Serial
+#teensy41.menu.usb.serial.build.usbtype=USB_SERIAL
+#teensy41.menu.usb.serial.upload_port.usbtype=USB_SERIAL
+#teensy41.menu.usb.serial2=Dual Serial
+#teensy41.menu.usb.serial2.build.usbtype=USB_DUAL_SERIAL
+#teensy41.menu.usb.serial2.upload_port.usbtype=USB_DUAL_SERIAL
+#teensy41.menu.usb.serial3=Triple Serial
+#teensy41.menu.usb.serial3.build.usbtype=USB_TRIPLE_SERIAL
+#teensy41.menu.usb.serial3.upload_port.usbtype=USB_TRIPLE_SERIAL
+#teensy41.menu.usb.keyboard=Keyboard
+#teensy41.menu.usb.keyboard.build.usbtype=USB_KEYBOARDONLY
+#teensy41.menu.usb.keyboard.upload_port.usbtype=USB_KEYBOARDONLY
+#teensy41.menu.usb.keyboard.fake_serial=teensy_gateway
+#teensy41.menu.usb.touch=Keyboard + Touch Screen
+#teensy41.menu.usb.touch.build.usbtype=USB_TOUCHSCREEN
+#teensy41.menu.usb.touch.upload_port.usbtype=USB_TOUCHSCREEN
+#teensy41.menu.usb.touch.fake_serial=teensy_gateway
+#teensy41.menu.usb.hidtouch=Keyboard + Mouse + Touch Screen
+#teensy41.menu.usb.hidtouch.build.usbtype=USB_HID_TOUCHSCREEN
+#teensy41.menu.usb.hidtouch.upload_port.usbtype=USB_HID_TOUCHSCREEN
+#teensy41.menu.usb.hidtouch.fake_serial=teensy_gateway
+#teensy41.menu.usb.hid=Keyboard + Mouse + Joystick
+#teensy41.menu.usb.hid.build.usbtype=USB_HID
+#teensy41.menu.usb.hid.upload_port.usbtype=USB_HID
+#teensy41.menu.usb.hid.fake_serial=teensy_gateway
+#teensy41.menu.usb.serialhid=Serial + Keyboard + Mouse + Joystick
+#teensy41.menu.usb.serialhid.build.usbtype=USB_SERIAL_HID
+#teensy41.menu.usb.serialhid.upload_port.usbtype=USB_SERIAL_HID
+#teensy41.menu.usb.midi=MIDI
+#teensy41.menu.usb.midi.build.usbtype=USB_MIDI
+#teensy41.menu.usb.midi.upload_port.usbtype=USB_MIDI
+#teensy41.menu.usb.midi.fake_serial=teensy_gateway
+#teensy41.menu.usb.midi4=MIDIx4
+#teensy41.menu.usb.midi4.build.usbtype=USB_MIDI4
+#teensy41.menu.usb.midi4.upload_port.usbtype=USB_MIDI4
+#teensy41.menu.usb.midi4.fake_serial=teensy_gateway
+#teensy41.menu.usb.midi16=MIDIx16
+#teensy41.menu.usb.midi16.build.usbtype=USB_MIDI16
+#teensy41.menu.usb.midi16.upload_port.usbtype=USB_MIDI16
+#teensy41.menu.usb.midi16.fake_serial=teensy_gateway
+#teensy41.menu.usb.serialmidi=Serial + MIDI
+#teensy41.menu.usb.serialmidi.build.usbtype=USB_MIDI_SERIAL
+#teensy41.menu.usb.serialmidi.upload_port.usbtype=USB_MIDI_SERIAL
+#teensy41.menu.usb.serialmidi4=Serial + MIDIx4
+#teensy41.menu.usb.serialmidi4.build.usbtype=USB_MIDI4_SERIAL
+#teensy41.menu.usb.serialmidi4.upload_port.usbtype=USB_MIDI4_SERIAL
+#teensy41.menu.usb.serialmidi16=Serial + MIDIx16
+#teensy41.menu.usb.serialmidi16.build.usbtype=USB_MIDI16_SERIAL
+#teensy41.menu.usb.serialmidi16.upload_port.usbtype=USB_MIDI16_SERIAL
+#teensy41.menu.usb.audio=Audio
+#teensy41.menu.usb.audio.build.usbtype=USB_AUDIO
+#teensy41.menu.usb.audio.upload_port.usbtype=USB_AUDIO
+#teensy41.menu.usb.audio.fake_serial=teensy_gateway
+#teensy41.menu.usb.serialmidiaudio=Serial + MIDI + Audio
+#teensy41.menu.usb.serialmidiaudio.build.usbtype=USB_MIDI_AUDIO_SERIAL
+#teensy41.menu.usb.serialmidiaudio.upload_port.usbtype=USB_MIDI_AUDIO_SERIAL
+#teensy41.menu.usb.serialmidi16audio=Serial + MIDIx16 + Audio
+#teensy41.menu.usb.serialmidi16audio.build.usbtype=USB_MIDI16_AUDIO_SERIAL
+#teensy41.menu.usb.serialmidi16audio.upload_port.usbtype=USB_MIDI16_AUDIO_SERIAL
+#teensy41.menu.usb.mtp=MTP Disk (Experimental)
+#teensy41.menu.usb.mtp.build.usbtype=USB_MTPDISK
+#teensy41.menu.usb.mtp.upload_port.usbtype=USB_MTPDISK
+#teensy41.menu.usb.mtp.fake_serial=teensy_gateway
+#teensy41.menu.usb.serialmtp=Serial + MTP Disk (Experimental)
+#teensy41.menu.usb.serialmtp.build.usbtype=USB_MTPDISK_SERIAL
+#teensy41.menu.usb.serialmtp.upload_port.usbtype=USB_MTPDISK_SERIAL
+teensy41.menu.usb.rawhid=Raw HID
+teensy41.menu.usb.rawhid.build.usbtype=USB_RAWHID
+teensy41.menu.usb.rawhid.upload_port.usbtype=USB_RAWHID
+teensy41.menu.usb.rawhid.fake_serial=teensy_gateway
+#teensy41.menu.usb.flightsim=Flight Sim Controls
+#teensy41.menu.usb.flightsim.build.usbtype=USB_FLIGHTSIM
+#teensy41.menu.usb.flightsim.upload_port.usbtype=USB_FLIGHTSIM
+#teensy41.menu.usb.flightsim.fake_serial=teensy_gateway
+#teensy41.menu.usb.flightsimjoystick=Flight Sim Controls + Joystick
+#teensy41.menu.usb.flightsimjoystick.build.usbtype=USB_FLIGHTSIM_JOYSTICK
+#teensy41.menu.usb.flightsimjoystick.upload_port.usbtype=USB_FLIGHTSIM_JOYSTICK
+#teensy41.menu.usb.flightsimjoystick.fake_serial=teensy_gateway
+#teensy41.menu.usb.disable=No USB
+#teensy41.menu.usb.disable.build.usbtype=USB_DISABLED
+
+
+# --- CPU Speed Options ---
+teensy41.menu.speed.600=600 MHz
+teensy41.menu.speed.528=528 MHz
+teensy41.menu.speed.450=450 MHz
+teensy41.menu.speed.396=396 MHz
+teensy41.menu.speed.150=150 MHz
+teensy41.menu.speed.24=24 MHz
+teensy41.menu.speed.720=720 MHz (overclock)
+teensy41.menu.speed.816=816 MHz (overclock)
+teensy41.menu.speed.912=912 MHz (overclock, cooling req'd)
+teensy41.menu.speed.960=960 MHz (overclock, cooling req'd)
+teensy41.menu.speed.1008=1.008 GHz (overclock, cooling req'd)
+teensy41.menu.speed.1008.build.fcpu=1008000000
+teensy41.menu.speed.960.build.fcpu=960000000
+teensy41.menu.speed.912.build.fcpu=912000000
+teensy41.menu.speed.816.build.fcpu=816000000
+teensy41.menu.speed.720.build.fcpu=720000000
+teensy41.menu.speed.600.build.fcpu=600000000
+teensy41.menu.speed.528.build.fcpu=528000000
+teensy41.menu.speed.450.build.fcpu=450000000
+teensy41.menu.speed.396.build.fcpu=396000000
+teensy41.menu.speed.150.build.fcpu=150000000
+teensy41.menu.speed.24.build.fcpu=24000000
+
+# --- Optimization Options ---
+teensy41.menu.opt.o2std=Faster
+teensy41.menu.opt.o2std.build.flags.optimize=-O2
+teensy41.menu.opt.o2std.build.flags.ldspecs=
+teensy41.menu.opt.o2lto=Faster with LTO
+teensy41.menu.opt.o2lto.build.flags.optimize=-O2 -flto -fno-fat-lto-objects
+teensy41.menu.opt.o2lto.build.flags.ldspecs=-fuse-linker-plugin
+teensy41.menu.opt.o1std=Fast
+teensy41.menu.opt.o1std.build.flags.optimize=-O1
+teensy41.menu.opt.o1std.build.flags.ldspecs=
+teensy41.menu.opt.o1lto=Fast with LTO
+teensy41.menu.opt.o1lto.build.flags.optimize=-O1 -flto -fno-fat-lto-objects
+teensy41.menu.opt.o1lto.build.flags.ldspecs=-fuse-linker-plugin
+teensy41.menu.opt.o3std=Fastest
+teensy41.menu.opt.o3std.build.flags.optimize=-O3
+teensy41.menu.opt.o3std.build.flags.ldspecs=
+teensy41.menu.opt.o3lto=Fastest with LTO
+teensy41.menu.opt.o3lto.build.flags.optimize=-O3 -flto -fno-fat-lto-objects
+teensy41.menu.opt.o3lto.build.flags.ldspecs=-fuse-linker-plugin
+teensy41.menu.opt.ogstd=Debug
+teensy41.menu.opt.ogstd.build.flags.optimize=-Og
+teensy41.menu.opt.ogstd.build.flags.ldspecs=
+teensy41.menu.opt.osstd=Smallest Code
+teensy41.menu.opt.osstd.build.flags.optimize=-Os --specs=nano.specs
+teensy41.menu.opt.osstd.build.flags.ldspecs=
+teensy41.menu.opt.oslto=Smallest Code with LTO
+teensy41.menu.opt.oslto.build.flags.optimize=-Os -flto -fno-fat-lto-objects --specs=nano.specs
+teensy41.menu.opt.oslto.build.flags.ldspecs=-fuse-linker-plugin
+
+# --- Standard Keyboard Layout Options (Keep these) ---
+teensy41.menu.keys.en-us=US English
+teensy41.menu.keys.en-us.build.keylayout=US_ENGLISH
+teensy41.menu.keys.fr-ca=Canadian French
+teensy41.menu.keys.fr-ca.build.keylayout=CANADIAN_FRENCH
+teensy41.menu.keys.xx-ca=Canadian Multilingual
+teensy41.menu.keys.xx-ca.build.keylayout=CANADIAN_MULTILINGUAL
+teensy41.menu.keys.cz-cz=Czech
+teensy41.menu.keys.cz-cz.build.keylayout=CZECH
+teensy41.menu.keys.da-da=Danish
+teensy41.menu.keys.da-da.build.keylayout=DANISH
+teensy41.menu.keys.fi-fi=Finnish
+teensy41.menu.keys.fi-fi.build.keylayout=FINNISH
+teensy41.menu.keys.fr-fr=French
+teensy41.menu.keys.fr-fr.build.keylayout=FRENCH
+teensy41.menu.keys.fr-be=French Belgian
+teensy41.menu.keys.fr-be.build.keylayout=FRENCH_BELGIAN
+teensy41.menu.keys.fr-ch=French Swiss
+teensy41.menu.keys.fr-ch.build.keylayout=FRENCH_SWISS
+teensy41.menu.keys.de-de=German
+teensy41.menu.keys.de-de.build.keylayout=GERMAN
+teensy41.menu.keys.de-dm=German (Mac)
+teensy41.menu.keys.de-dm.build.keylayout=GERMAN_MAC
+teensy41.menu.keys.de-ch=German Swiss
+teensy41.menu.keys.de-ch.build.keylayout=GERMAN_SWISS
+teensy41.menu.keys.is-is=Icelandic
+teensy41.menu.keys.is-is.build.keylayout=ICELANDIC
+teensy41.menu.keys.en-ie=Irish
+teensy41.menu.keys.en-ie.build.keylayout=IRISH
+teensy41.menu.keys.it-it=Italian
+teensy41.menu.keys.it-it.build.keylayout=ITALIAN
+teensy41.menu.keys.no-no=Norwegian
+teensy41.menu.keys.no-no.build.keylayout=NORWEGIAN
+teensy41.menu.keys.pt-pt=Portuguese
+teensy41.menu.keys.pt-pt.build.keylayout=PORTUGUESE
+teensy41.menu.keys.pt-br=Portuguese Brazilian
+teensy41.menu.keys.pt-br.build.keylayout=PORTUGUESE_BRAZILIAN
+teensy41.menu.keys.rs-rs=Serbian (Latin Only)
+teensy41.menu.keys.rs-rs.build.keylayout=SERBIAN_LATIN_ONLY
+teensy41.menu.keys.es-es=Spanish
+teensy41.menu.keys.es-es.build.keylayout=SPANISH
+teensy41.menu.keys.es-mx=Spanish Latin America
+teensy41.menu.keys.es-mx.build.keylayout=SPANISH_LATIN_AMERICA
+teensy41.menu.keys.sv-se=Swedish
+teensy41.menu.keys.sv-se.build.keylayout=SWEDISH
+teensy41.menu.keys.tr-tr=Turkish (partial)
+teensy41.menu.keys.tr-tr.build.keylayout=TURKISH
+teensy41.menu.keys.en-gb=United Kingdom
+teensy41.menu.keys.en-gb.build.keylayout=UNITED_KINGDOM
+teensy41.menu.keys.usint=US International
+teensy41.menu.keys.usint.build.keylayout=US_INTERNATIONAL
