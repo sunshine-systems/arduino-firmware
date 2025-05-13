@@ -1,43 +1,41 @@
 #include <Arduino.h>
-#include "config.h" // Include our configuration definitions
-#include <USBHost_t36.h>
+#include "USBHost_t36.h"
 
 unsigned long loopCounter = 0;
 
 void setup() {
-  // 1. Initialize the debug serial port (defined in config.h)
-  DEBUG_SERIAL_PORT.begin(DEBUG_BAUD_RATE);
+  // 1. Start Serial Device for logging
+  Serial1.begin(115200);
+  Serial4.begin(115200);
+  // Optional: Wait for serial connection for a moment
+  unsigned long serial_timeout_start = millis();
+  while (!Serial1 && (millis() - serial_timeout_start < 2000)) { delay(10); }
 
-  // 2. Small delay to allow Serial to stabilize (optional but sometimes helpful)
-  delay(500);
+  Serial1.println("\n\n--- Sunshine Teensy FW Test ||  LED BLINK ");
+  Serial1.println("-----------------------------------------------------");
 
-  // 3. Print startup messages
-  DEBUG_SERIAL_PORT.println("\n\n--- Teensy Core Modification Baseline Sketch ---");
-  DEBUG_SERIAL_PORT.println("----------------------------------------------");
-  DEBUG_SERIAL_PORT.printf("Debug Port: Initialized @ %lu baud\n", (unsigned long)DEBUG_BAUD_RATE);
-
-  // 4. Initialize built-in LED for visual feedback
+  // 2. Initialize built-in LED for visual feedback
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH); // Turn LED ON during setup
-  DEBUG_SERIAL_PORT.println("LED Initialized: ON");
-
-  DEBUG_SERIAL_PORT.println("Setup complete. Entering loop...");
-  DEBUG_SERIAL_PORT.println("----------------------------------------------");
-  DEBUG_SERIAL_PORT.flush(); // Ensure messages are sent before loop starts
+  Serial1.println("LED Initialized: ON");
+  Serial1.flush();
 
   digitalWrite(LED_BUILTIN, LOW); // Turn LED OFF before loop
 }
 
 void loop() {
-  // 1. Indicate loop is running via Serial
   loopCounter++;
-  DEBUG_SERIAL_PORT.printf("Loop iteration: %lu\n", loopCounter);
 
-  // 2. Blink the LED
-  digitalWrite(LED_BUILTIN, HIGH); // LED ON
-  delay(100);                     // Keep LED on briefly
-  digitalWrite(LED_BUILTIN, LOW);  // LED OFF
+  // CRITICAL: Call myHost.Task() in your loop.
+  // This function processes USB events and handles ongoing enumeration tasks or driver tasks.
+  // Even without custom drivers, it's needed for things like hub port event processing.
+  //myHost.Task();
 
-  // 3. Delay before next loop iteration
-  delay(900); // Makes the total loop time approx 1 second
+  // Blink the LED to show the loop is running
+  if (loopCounter % 10 == 0) { // Blink less aggressively
+    digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+  }
+  
+  // Short delay to allow USB tasks to run and keep loop responsive
+  delay(100);
 }
