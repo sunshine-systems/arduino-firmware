@@ -49,41 +49,41 @@ class TestSuiteOfData:
         data = firmwareInterface.create_spoofed_hid_report(0, 0, 0)
         firmwareInterface.add_data_to_write_queue(data)
 
-        # # Move up 22px
-        # print("up")
-        # data = firmwareInterface.create_spoofed_hid_report(0, 0, -11)
-        # firmwareInterface.add_data_to_write_queue(data)
-        # data = firmwareInterface.create_spoofed_hid_report(0, 0, -22)
-        # firmwareInterface.add_data_to_write_queue(data)
-        # data = firmwareInterface.create_spoofed_hid_report(0, 0, -33)
-        # firmwareInterface.add_data_to_write_queue(data)
+        # Move up
+        print("up")
+        data = firmwareInterface.create_spoofed_hid_report(0, 0, -11)
+        firmwareInterface.add_data_to_write_queue(data)
+        data = firmwareInterface.create_spoofed_hid_report(0, 0, -22)
+        firmwareInterface.add_data_to_write_queue(data)
+        data = firmwareInterface.create_spoofed_hid_report(0, 0, -33)
+        firmwareInterface.add_data_to_write_queue(data)
 
-        # # Move down 22px
-        # print("down")
-        # data = firmwareInterface.create_spoofed_hid_report(0, 0, 11)
-        # firmwareInterface.add_data_to_write_queue(data)
-        # data = firmwareInterface.create_spoofed_hid_report(0, 0, 22)
-        # firmwareInterface.add_data_to_write_queue(data)
-        # data = firmwareInterface.create_spoofed_hid_report(0, 0, 33)
-        # firmwareInterface.add_data_to_write_queue(data)
+        # Move down
+        print("down")
+        data = firmwareInterface.create_spoofed_hid_report(0, 0, 11)
+        firmwareInterface.add_data_to_write_queue(data)
+        data = firmwareInterface.create_spoofed_hid_report(0, 0, 22)
+        firmwareInterface.add_data_to_write_queue(data)
+        data = firmwareInterface.create_spoofed_hid_report(0, 0, 33)
+        firmwareInterface.add_data_to_write_queue(data)
 
-        # # Move Left 22px
-        # print("right")
-        # data = firmwareInterface.create_spoofed_hid_report(0, -11, 0)
-        # firmwareInterface.add_data_to_write_queue(data)
-        # data = firmwareInterface.create_spoofed_hid_report(0, -22, 0)
-        # firmwareInterface.add_data_to_write_queue(data)
-        # data = firmwareInterface.create_spoofed_hid_report(0, -33, 0)
-        # firmwareInterface.add_data_to_write_queue(data)
+        # Move Left
+        print("right")
+        data = firmwareInterface.create_spoofed_hid_report(0, -11, 0)
+        firmwareInterface.add_data_to_write_queue(data)
+        data = firmwareInterface.create_spoofed_hid_report(0, -22, 0)
+        firmwareInterface.add_data_to_write_queue(data)
+        data = firmwareInterface.create_spoofed_hid_report(0, -33, 0)
+        firmwareInterface.add_data_to_write_queue(data)
 
-        # # Move Right 22px
-        # print("left")
-        # data = firmwareInterface.create_spoofed_hid_report(0, 11, 0)
-        # firmwareInterface.add_data_to_write_queue(data)
-        # data = firmwareInterface.create_spoofed_hid_report(0, 22, 0)
-        # firmwareInterface.add_data_to_write_queue(data)
-        # data = firmwareInterface.create_spoofed_hid_report(0, 33, 0)
-        # firmwareInterface.add_data_to_write_queue(data)
+        # Move Right
+        print("left")
+        data = firmwareInterface.create_spoofed_hid_report(0, 11, 0)
+        firmwareInterface.add_data_to_write_queue(data)
+        data = firmwareInterface.create_spoofed_hid_report(0, 22, 0)
+        firmwareInterface.add_data_to_write_queue(data)
+        data = firmwareInterface.create_spoofed_hid_report(0, 33, 0)
+        firmwareInterface.add_data_to_write_queue(data)
 
 
 if __name__ == "__main__":
@@ -95,10 +95,14 @@ if __name__ == "__main__":
     processes = Processes(arduinoInterface=arduinoInterface, firmwareInterface=firmwareInterface, runtimeSettings=runtimeSettings, timeout=20)
 
     """ Test application of default settings"""
-    firmwareInterface.syncDeviceWithDefaultSettings()
+    #firmwareInterface.syncDeviceWithDefaultSettings()
 
     """ Apply all movement test data """
     testSuite.create_and_set_all_test_data()
+    testSuite.create_and_set_all_test_data()
+    testSuite.create_and_set_all_test_data()
+    testSuite.create_and_set_all_test_data()
+    
     
     """ Start Processing """
     processes.start_threads()

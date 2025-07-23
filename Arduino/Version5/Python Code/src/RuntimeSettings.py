@@ -1,7 +1,7 @@
 class RuntimeSettings:
     def __init__(self):
         # Settings for arduino
-        self.arduinoPort = "COM8"
+        self.arduinoPort = "COM7"
         self.arduinoBaudRate = 115200
 
         # Your Device Settings
