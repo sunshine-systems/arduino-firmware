@@ -1,5 +1,6 @@
 #include "FirmwareSettings.h"
-#include "Config.h" // Include if you need constants or global configurations
+#include "Config.h"
+#include "SunBoxLogger.h"
 
 FirmwareSettings::FirmwareSettings() {}
 
@@ -9,8 +10,7 @@ void FirmwareSettings::updateSettings(const uint8_t* data) {
 
     switch (settingId) {
         case 0:
-            FTDI_DEVICE.print("V: ");
-            FTDI_DEVICE.println(FIRMWARE_VERSION, 2);
+            logger.infof("V: %.2f", (double)FIRMWARE_VERSION);
             break;
         case 1:
             logPerformanceMetrics = settingValue;
@@ -57,12 +57,12 @@ void FirmwareSettings::updateSettings(const uint8_t* data) {
             printSettingChange("enableDeltaLogging", String(enableDeltaLogging));
             break;
         default:
-            FTDI_DEVICE.println("I: Unknown setting ID received -> " + String(settingId));
-            FTDI_DEVICE.println("I: Unknown setting ID Value received -> " + String(settingValue));
+            logger.info("Unknown setting ID received -> " + String(settingId));
+            logger.info("Unknown setting ID Value received -> " + String(settingValue));
             break;
     }
 }
 
 void FirmwareSettings::printSettingChange(const String& settingName, const String& value) const {
-    FTDI_DEVICE.println("I: " + settingName + ": " + value);
+    logger.info(settingName + ": " + value);
 }

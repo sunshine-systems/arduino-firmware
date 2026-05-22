@@ -3,12 +3,32 @@
 
 #include "USBMouseHIDReportInterceptor.h"
 #include "SerialMouseHIDReportInterceptor.h"
+#include "AntiDetect.h"
 
-#define MOUSE_LEFT      1
-#define MOUSE_RIGHT     2
-#define MOUSE_MIDDLE    4
-#define MOUSE_BUTTON4   8
+#define MOUSE_LEFT      0x01
+#define MOUSE_RIGHT     0x02
+#define MOUSE_MIDDLE    0x04
+#define MOUSE_BUTTON4   0x08
 #define MOUSE_BUTTON5   0x10
+
+// Button handoff state machine (mirrors Teensy SunBoxSyntheticHandleOutput).
+// Forces a randomized release gap when the user presses a button the
+// synthetic (serial) input is already holding, so the takeover looks natural.
+enum ButtonHandoffState {
+    HANDOFF_IDLE,
+    HANDOFF_SYNTHETIC_HOLD,
+    HANDOFF_RELEASE,
+    HANDOFF_USER_CONTROL
+};
+
+struct ButtonHandoff {
+    ButtonHandoffState state = HANDOFF_IDLE;
+    unsigned long releaseStartMs = 0;
+    unsigned long gapDurationMs = 0;  // randomized per-handoff (18-75ms)
+};
+
+static const unsigned long HANDOFF_GAP_MIN_MS = 18;
+static const unsigned long HANDOFF_GAP_MAX_MS = 75;
 
 class MouseEventSpoofer {
     public:
@@ -16,32 +36,51 @@ class MouseEventSpoofer {
         void spoofEvent();
 
     private:
-        void submitButtonStates();
         void modifyMovementWithSerialData(int16_t &usbXMovement, int16_t &usbYMovement, int16_t serialXMovement, int16_t serialYMovement);
         void onMouseMove(int16_t xMovement, int16_t yMovement, int8_t scrollValue);
-        void logMouseEvent(uint8_t mouseButtons);  // Ensure this function is declared
-        bool shouldExcludeButton(uint8_t currentButtons, uint8_t previousButtons, uint8_t buttonMask); // Ensure this function is declared
-        void handleMouseButtonEvent(uint8_t currentButtons, uint8_t previousButtons, uint8_t buttonMask); // Ensure this function is declared
-        void handleMouseButtonConfigCheck(uint8_t &usbMouseButtons, uint8_t &unmodifiedUsbMouseButtons, uint8_t &usbPreviousMouseButtons, uint8_t buttonMask, int disablePassthroughOption, unsigned long &lastPressTime);
-        void handleButtonEvents(uint8_t usbButtons, uint8_t previousUsbButtonsState, uint8_t serialButtons, uint8_t previousSerialButtonsState);
+        bool shouldExcludeButton(uint8_t currentButtons, uint8_t previousButtons, uint8_t buttonMask);
+        void handleMouseButtonConfigCheck(uint8_t &buttons, uint8_t unmodifiedButtons, uint8_t previousButtons, uint8_t buttonMask, int disablePassthroughOption, unsigned long &lastPressTime);
+        uint8_t processButtonHandoff(ButtonHandoff &handoff, uint8_t buttonMask,
+                                     uint8_t serialButtons, uint8_t usbButtons,
+                                     uint8_t prevUsbButtons);
+        void submitFinalButtonState(uint8_t finalButtons);
+        void emitButtonChangeLog(uint8_t unmodifiedUsbButtons);
+        void bufferDelta(int16_t rawX, int16_t rawY);
 
         // Member variables
         USBMouseHIDReportInterceptor* usbInterceptor;
         SerialMouseHIDReportInterceptor* serialInterceptor;
-        uint8_t finalButtonStates;
-        uint8_t previousUsbButtonsState;
         unsigned long activationTimestamp4MouseButtonExclusion;
         unsigned long activationTimestamp4MouseMovementLockout;
 
-        // Use integers for fixed-point arithmetic tracking
-        int sensReductionXAccumulator = 0; // Accumulator for X-axis movement
-        int sensReductionYAccumulator = 0; // Accumulator for Y-axis movement
+        // Fixed-point accumulators for sens reduction
+        int sensReductionXAccumulator = 0;
+        int sensReductionYAccumulator = 0;
 
-        // Timestamps for double-tap logic
+        // Double-tap timestamps
         unsigned long lastRMBPressTime = 0;
         unsigned long lastLMBPressTime = 0;
         unsigned long lastMB4PressTime = 0;
         unsigned long lastMB5PressTime = 0;
+
+        // Button-change detector for M: log
+        uint8_t lastLoggedUsbButtons = 0;
+
+        // Last submitted final button state (so we only press/release on change)
+        uint8_t lastOutputButtons = 0;
+
+        // LMB / RMB handoff state machines
+        ButtonHandoff lmbHandoff;
+        ButtonHandoff rmbHandoff;
+
+        // Anti-detect sign-flip sanitizer
+        AntiDetect antiDetect;
+
+        // Delta buffer for M: x,y:x,y:... output (every 10 USB frames)
+        static const uint8_t DELTA_BUFFER_SIZE = 10;
+        int16_t deltaBufferX[DELTA_BUFFER_SIZE];
+        int16_t deltaBufferY[DELTA_BUFFER_SIZE];
+        uint8_t deltaFrameCount = 0;
 };
 
 #endif // _MOUSEEVENTSPOOFER_H_

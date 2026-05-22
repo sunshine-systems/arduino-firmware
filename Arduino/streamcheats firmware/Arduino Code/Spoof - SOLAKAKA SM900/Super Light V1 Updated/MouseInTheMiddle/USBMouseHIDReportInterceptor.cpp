@@ -2,6 +2,7 @@
 #include "USBMouseHIDReportInterceptor.h"
 #include "MathAndConversions.h"
 #include "Config.h"
+#include "SunBoxLogger.h"
 
 USBMouseHIDReportInterceptor::USBMouseHIDReportInterceptor() {}
 
@@ -25,18 +26,15 @@ void USBMouseHIDReportInterceptor::reset(){
 
 void USBMouseHIDReportInterceptor::processAndSetHIDReportData00A6(const uint8_t* data)
 {
-    if (DEBUG_MODE) {
-        FTDI_DEVICE.print("I: ");
-        for (uint8_t i = 0; i < 8; i++) {
-            FTDI_DEVICE.print(data[i], HEX);
-        }
-        FTDI_DEVICE.println("");
-    }
-
     previousMouseButtons = mouseButtons;
     mouseButtons = data[0];
     xMovement = mathAndConversions.parseXandY_C547(data[3], data[2]);
     yMovement = mathAndConversions.parseXandY_C547(data[5], data[4]);
     scrollWheel = data[6];
-    isDataAvailable = true;  // Set dataReceived to true when new data is set
+    isDataAvailable = true;
+
+    if (DEBUG_MODE) {
+        logger.debugf("Mouse data - Buttons:0x%02X X:%d Y:%d Wheel:%d",
+                      mouseButtons, xMovement, yMovement, scrollWheel);
+    }
 }
