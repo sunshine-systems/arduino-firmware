@@ -24,7 +24,6 @@ class MouseEventSpoofer {
         void handleMouseButtonEvent(uint8_t currentButtons, uint8_t previousButtons, uint8_t buttonMask); // Ensure this function is declared
         void handleMouseButtonConfigCheck(uint8_t &usbMouseButtons, uint8_t &unmodifiedUsbMouseButtons, uint8_t &usbPreviousMouseButtons, uint8_t buttonMask, int disablePassthroughOption, unsigned long &lastPressTime);
         void handleButtonEvents(uint8_t usbButtons, uint8_t previousUsbButtonsState, uint8_t serialButtons, uint8_t previousSerialButtonsState);
-        void performSpinEvent(bool isBeforeEvent, uint8_t usbMouseButtons, uint8_t usbPreviousMouseButtons, uint8_t serialMouseButtons, uint8_t serialPreviousMouseButtons);
 
         // Member variables
         USBMouseHIDReportInterceptor* usbInterceptor;
@@ -33,7 +32,6 @@ class MouseEventSpoofer {
         uint8_t previousUsbButtonsState;
         unsigned long activationTimestamp4MouseButtonExclusion;
         unsigned long activationTimestamp4MouseMovementLockout;
-        bool spinPerformed;
 
         // Use integers for fixed-point arithmetic tracking
         int sensReductionXAccumulator = 0; // Accumulator for X-axis movement

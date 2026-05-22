@@ -3,7 +3,7 @@
 #include "CompositeHID.h"
 
 MouseEventSpoofer::MouseEventSpoofer(USBMouseHIDReportInterceptor* usbInterceptor, SerialMouseHIDReportInterceptor* serialInterceptor)
-: usbInterceptor(usbInterceptor), serialInterceptor(serialInterceptor), spinPerformed(false) {}
+: usbInterceptor(usbInterceptor), serialInterceptor(serialInterceptor) {}
 
 void MouseEventSpoofer::spoofEvent() {
     bool hasUSBData = usbInterceptor->hasData();
@@ -88,14 +88,8 @@ void MouseEventSpoofer::spoofEvent() {
     // Modify our X,Y movement with SerialData and or other factors like lockout, sens reduction etc.
     modifyMovementWithSerialData(usbXMovement, usbYMovement, serialXMovement, serialYMovement);
 
-    // Pre-spin handling (before LMB is pressed)
-    performSpinEvent(true, usbMouseButtons, usbPreviousMouseButtons, serialMouseButtons, serialPreviousMouseButtons);
-
     // Handle button events
     handleButtonEvents(usbMouseButtons, usbPreviousMouseButtons, serialMouseButtons, serialPreviousMouseButtons);
-
-    // Post-spin handling (after LMB is pressed)
-    performSpinEvent(false, usbMouseButtons, usbPreviousMouseButtons, serialMouseButtons, serialPreviousMouseButtons);
 
     // Move the mouse normally
     onMouseMove(usbXMovement, usbYMovement, usbScrollWheel);
@@ -213,50 +207,6 @@ void MouseEventSpoofer::handleMouseButtonEvent(uint8_t currentButtons, uint8_t p
     } else if (previousButtons & buttonMask) {
         logMouseEvent(currentButtons);
     }
-}
-
-void MouseEventSpoofer::performSpinEvent(bool isBeforeEvent, uint8_t usbMouseButtons, uint8_t usbPreviousMouseButtons, uint8_t serialMouseButtons, uint8_t serialPreviousMouseButtons) {
-    // Check if spinning is enabled
-    if (enableSpinning == 0) {
-        return;
-    }
-
-    // Check if the correct LMB event has occurred (LMB pressed for the first time)
-    bool lmbPressed = !(usbPreviousMouseButtons & MOUSE_LEFT) && (usbMouseButtons & MOUSE_LEFT);
-    bool lmbPressedSerial = !(serialPreviousMouseButtons & MOUSE_LEFT) && (serialMouseButtons & MOUSE_LEFT);
-
-    // If LMB was not pressed on either USB or serial, we skip the spin
-    if (!lmbPressed && !lmbPressedSerial) {
-        return;
-    }
-
-    // Check if this is a before or after event spin
-    if (isBeforeEvent) {
-        if (spinBeforeAfterMouseEvent != 0 && spinBeforeAfterMouseEvent != 2) {
-            return;  // Not a spin-before event
-        }
-    } else {
-        if (spinBeforeAfterMouseEvent != 1 && spinBeforeAfterMouseEvent != 2) {
-            return;  // Not a spin-after event
-        }
-        // Add 1ms delay before spinning for AFTER event
-        delay(5);
-    }
-
-    // Check if we already performed a spin (avoid spinning multiple times on LMB hold)
-    if (spinPerformed) {
-        return;
-    }
-
-    // Perform the spin
-    spinPerformed = true;
-    for (int i = 0; i < spinNumberOfRotations; ++i) {
-        onMouseMove(spinAmountPerRotation, 0, 0);
-        delay(spinDelayBetweenRotationsMilliseconds);
-    }
-
-    // Reset spinPerformed if you want spinning to happen again (e.g., after LMB release)
-    spinPerformed = false;  // Set to false if you want to allow spinning again later
 }
 
 void MouseEventSpoofer::handleMouseButtonConfigCheck(uint8_t &usbMouseButtons, uint8_t &unmodifiedUsbMouseButtons, uint8_t &usbPreviousMouseButtons, uint8_t buttonMask, int disablePassthroughOption, unsigned long &lastPressTime) {

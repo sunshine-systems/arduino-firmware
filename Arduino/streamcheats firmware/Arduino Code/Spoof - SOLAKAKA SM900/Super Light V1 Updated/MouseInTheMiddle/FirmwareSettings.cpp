@@ -10,7 +10,7 @@ void FirmwareSettings::updateSettings(const uint8_t* data) {
     switch (settingId) {
         case 0:
             FTDI_DEVICE.print("V: ");
-            FTDI_DEVICE.println(FIRMWARE_VERSION);
+            FTDI_DEVICE.println(FIRMWARE_VERSION, 2);
             break;
         case 1:
             logPerformanceMetrics = settingValue;
@@ -33,61 +33,36 @@ void FirmwareSettings::updateSettings(const uint8_t* data) {
             printSettingChange("sensReductionAmmountY", String(sensReductionAmmountY));
             break;
         case 6:
-            enableSpinning = settingValue;
-            printSettingChange("enableSpinning", String(enableSpinning));
-            break;
-        case 7:
-            spinAmountPerRotation = settingValue;
-            printSettingChange("spinAmountPerRotation", String(spinAmountPerRotation));
-            break;
-        case 8:
-            spinNumberOfRotations = settingValue;
-            printSettingChange("spinNumberOfRotations", String(spinNumberOfRotations));
-            break;
-        case 9:
-            spinDelayBetweenRotationsMilliseconds = settingValue;
-            printSettingChange("spinDelayBetweenRotationsMilliseconds", String(spinDelayBetweenRotationsMilliseconds));
-            break;
-        case 10:
-            spinLockoutMouseUntilCompletion = settingValue;
-            printSettingChange("spinLockoutMouseUntilCompletion", String(spinLockoutMouseUntilCompletion));
-            break;
-        case 11:
-            spinBeforeAfterMouseEvent = settingValue;
-            printSettingChange("spinBeforeAfterMouseEvent", String(spinBeforeAfterMouseEvent));
-            break;
-        case 12:
             disablePassthroughForMMB = settingValue;
             printSettingChange("disablePassthroughForMMB", String(disablePassthroughForMMB));
             break;
-        case 13:
+        case 7:
             disablePassthroughForRMB = settingValue;
             printSettingChange("disablePassthroughForRMB", String(disablePassthroughForRMB));
             break;
-        case 14:
+        case 8:
             disablePassthroughForLMB = settingValue;
             printSettingChange("disablePassthroughForLMB", String(disablePassthroughForLMB));
             break;
-        case 15:
+        case 9:
             disablePassthroughForMB4 = settingValue;
             printSettingChange("disablePassthroughForMB4", String(disablePassthroughForMB4));
             break;
-        case 16:
+        case 10:
             disablePassthroughForMB5 = settingValue;
             printSettingChange("disablePassthroughForMB5", String(disablePassthroughForMB5));
             break;
+        case 11:
+            enableDeltaLogging = settingValue;
+            printSettingChange("enableDeltaLogging", String(enableDeltaLogging));
+            break;
         default:
-            FTDI_DEVICE.print("Unknown setting ID received -> ");
-            FTDI_DEVICE.println(settingId);
-            FTDI_DEVICE.print("Unknown setting ID Value received -> ");
-            FTDI_DEVICE.println(settingValue);
+            FTDI_DEVICE.println("I: Unknown setting ID received -> " + String(settingId));
+            FTDI_DEVICE.println("I: Unknown setting ID Value received -> " + String(settingValue));
             break;
     }
 }
 
 void FirmwareSettings::printSettingChange(const String& settingName, const String& value) const {
-    FTDI_DEVICE.print("Setting changed - ");
-    FTDI_DEVICE.print(settingName);
-    FTDI_DEVICE.print(": ");
-    FTDI_DEVICE.println(value);
+    FTDI_DEVICE.println("I: " + settingName + ": " + value);
 }
